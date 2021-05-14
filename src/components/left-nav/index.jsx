@@ -70,14 +70,13 @@ class LeftNav extends Component {
     }
 
     render() {
-        // const menuNodes = this.getMenuNodes(menuList)
         const path = this.props.location.pathname
         const openKey = this.openKey
         return (
             <div className='left-nav'>
                 <Link to='/' className='left-nav-header'>
                     <img src={logo} alt='logo'/>
-                    <h1>Background management system</h1>
+                    <h1>Background System</h1>
                 </Link>
                 <Menu defaultSelectedKeys={['/home']} selectedKeys={[path]} defaultOpenKeys={[openKey]} mode='inline'
                       theme='dark'>

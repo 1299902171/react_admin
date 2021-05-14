@@ -10,12 +10,12 @@ const menuList = [
         icon: 'appstore',
         children: [ // 子菜单列表
             {
-                title: 'Category Management',
+                title: 'Categories',
                 key: '/category',
                 icon: 'bars'
             },
             {
-                title: 'Product Management',
+                title: 'Products',
                 key: '/product',
                 icon: 'tool'
             },
@@ -32,7 +32,7 @@ const menuList = [
         icon: 'safety',
     },
     {
-        title: 'Charts Management',
+        title: 'Charts',
         key: '/charts',
         icon: 'area-chart',
         children: [

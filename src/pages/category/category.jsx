@@ -15,7 +15,7 @@ class Category extends Component {
             },
             {
                 title: 'operation',
-                width: 300,
+                width: 500,
                 render: () => (
                     <span>
                         <LinkButton>Alter classification</LinkButton>
