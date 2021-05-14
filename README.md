@@ -262,12 +262,12 @@
     更新分类
         
 ## 3. 异步显示一级分类列表    
-    设计一级分类列表的状态: categorys
+    设计一级分类列表的状态: categories
     异步获取一级分类列表: componentDidMount(){}
     更新状态, 显示
 
 ## 4. 显示二级分类列表
-    设计状态: subCategorys / parentId / parentName
+    设计状态: subcategories / parentId / parentName
     显示二级分类列表: 根据parentId状态值, 异步获取分类列表
     setState()的问题
         setState()更新状态是异步更新的, 直接读取状态值还是旧的状态值

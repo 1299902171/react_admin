@@ -1,53 +1,53 @@
 const menuList = [
     {
-        title: '首页', // 菜单标题名称
+        title: 'Home page', // 菜单标题名称
         key: '/home', // 对应的path
         icon: 'home', // 图标名称
     },
     {
-        title: '商品',
+        title: 'Products',
         key: '/products',
         icon: 'appstore',
         children: [ // 子菜单列表
             {
-                title: '品类管理',
+                title: 'Category Management',
                 key: '/category',
                 icon: 'bars'
             },
             {
-                title: '商品管理',
+                title: 'Product Management',
                 key: '/product',
                 icon: 'tool'
             },
         ]
     },
     {
-        title: '用户管理',
+        title: 'User Management',
         key: '/user',
         icon: 'user'
     },
     {
-        title: '角色管理',
+        title: 'Role Management',
         key: '/role',
         icon: 'safety',
     },
     {
-        title: '图形图表',
+        title: 'Charts Management',
         key: '/charts',
         icon: 'area-chart',
         children: [
             {
-                title: '柱形图',
+                title: 'bar-chart',
                 key: '/charts/bar',
                 icon: 'bar-chart'
             },
             {
-                title: '折线图',
+                title: 'line-chart',
                 key: '/charts/line',
                 icon: 'line-chart'
             },
             {
-                title: '饼图',
+                title: 'pie-chart',
                 key: '/charts/pie',
                 icon: 'pie-chart'
             },

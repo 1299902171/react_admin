@@ -25,7 +25,7 @@ class Login extends Component {
                 try {
                     const result = await reqLogin(username, password)
                     if (result.status === 0) {
-                        message.success('登录成功！')
+                        message.success('Login successful!')
                         const user = result.data
                         memoryUtils.user = user
                         storageUtils.saveUser(user)
@@ -44,13 +44,13 @@ class Login extends Component {
 
     validatePassword = (rule, value, callback) => {
         if (!value) {
-            callback('必须输入密码')
+            callback('Password is required')
         } else if (value.length < 4) {
-            callback('密码长度不能小于4位')
+            callback('The password length cannot be less than 4 digits')
         } else if (value.length > 12) {
-            callback('密码长度不能大于12位')
+            callback('The password length cannot be greater than 12 digits')
         } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-            callback('密码必须由英文字母、数字或下划线组成')
+            callback('Password must consist of English letters, numbers or underscores')
         } else {
             callback()
         }
@@ -67,24 +67,24 @@ class Login extends Component {
             <div className="login">
                 <header className="login-header">
                     <img src={logo} alt="logo"/>
-                    <h1>React项目: 后台管理系统</h1>
+                    <h1>Backstage management system</h1>
                 </header>
                 <section className="login-content">
-                    <h2>用户登陆</h2>
+                    <h2>User Login</h2>
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <Item>
                             {
                                 getFieldDecorator('username', {
                                     rules: [
-                                        {required: true, whiteSpace: true, message: '必须输入用户名'},
-                                        {min: 4, message: '用户名至少4位'},
-                                        {max: 12, message: '用户名最多12位'},
-                                        {pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须由英文字母、数字或下划线组成'}
+                                        {required: true, whiteSpace: true, message: 'Username is required'},
+                                        {min: 4, message: 'The username length cannot be less than 4 digits'},
+                                        {max: 12, message: 'The username length cannot be greater than 12 digits'},
+                                        {pattern: /^[a-zA-Z0-9_]+$/, message: 'Username must consist of English letters, numbers or underscores'}
                                     ]
                                 })(
                                     <Input
                                         prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                        placeholder="用户名"
+                                        placeholder="user name"
                                     />
                                 )
                             }
@@ -101,14 +101,14 @@ class Login extends Component {
                                     <Input
                                         prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                         type="password"
-                                        placeholder="密码"
+                                        placeholder="password"
                                     />
                                 )
                             }
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit" className="login-form-button">
-                                登陆
+                                Login
                             </Button>
                         </Form.Item>
                     </Form>

@@ -77,7 +77,7 @@ class LeftNav extends Component {
             <div className='left-nav'>
                 <Link to='/' className='left-nav-header'>
                     <img src={logo} alt='logo'/>
-                    <h1>后台管理系统</h1>
+                    <h1>Background management system</h1>
                 </Link>
                 <Menu defaultSelectedKeys={['/home']} selectedKeys={[path]} defaultOpenKeys={[openKey]} mode='inline'
                       theme='dark'>

@@ -41,7 +41,7 @@ class Admin extends Component {
                             <Redirect from='/' to='/home'/>
                         </Switch>
                     </Content>
-                    <Footer style={{textAlign: 'center', color: '#ccc'}}>推荐使用谷歌浏览器</Footer>
+                    <Footer style={{textAlign: 'center', color: '#ccc'}}>Google browser recommended</Footer>
                 </Layout>
             </Layout>
         );
