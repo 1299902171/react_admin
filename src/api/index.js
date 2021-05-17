@@ -3,6 +3,7 @@ import jsonp from "jsonp";
 import {message} from "antd";
 
 const BASE = 'http://120.55.193.14:5000'
+// const BASE = 'http:zlx.cool:5000'
 
 export const reqCategories = (parentId) => ajax(BASE + '/manage/category/list', {parentId})
 export const reqAddCategories = (categoryName,parentId) => ajax(BASE + '/manage/category/add', {categoryName,parentId},'POST')

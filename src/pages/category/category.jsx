@@ -1,11 +1,50 @@
 import React, {Component} from 'react';
-import {Card, Table, Button, Icon, message} from "antd";
+import {Card, Table, Button, Icon, message, Modal} from "antd";
 import LinkButton from "../../components/link-button";
-import {reqCategories} from "../../api";
+import {reqCategories, reqUpdateCategories, reqAddCategories} from "../../api";
+import AddForm from "./add-form";
+import UpdateForm from "./update-form";
 
 class Category extends Component {
     state = {
-        categories: []
+        loading: false,
+        categories: [],
+        parentId: '0',
+        parentName: '',
+        subCategories: [],
+        showStatus: 0,
+    }
+    handleCancel = () => {
+        this.setState({
+            showStatus: 0
+        })
+    }
+    showAdd = () => {
+        this.setState({
+            showStatus: 1
+        })
+    }
+    addCategory = () => {
+
+    }
+    showUpdate = (category) => {
+        this.category = category
+        this.setState({
+            showStatus: 2
+        })
+    }
+    updateCategory = async () => {
+        this.setState({
+            showStatus: 0
+        })
+        const categoryId = this.category._id
+        const categoryName = this.form.getFieldValue('categoryName')
+        this.form.resetFields()
+        const result = await reqUpdateCategories({categoryId, categoryName})
+        if (result.status === 0) {
+            this.getCategories()
+        }
+        this.getCategories()
     }
     initColumns = () => {
         this.columns = [
@@ -16,22 +55,51 @@ class Category extends Component {
             {
                 title: 'operation',
                 width: 500,
-                render: () => (
+                render: (category) => (
                     <span>
-                        <LinkButton>Alter classification</LinkButton>
-                        <LinkButton>View sub-categories</LinkButton>
+                        <LinkButton onClick={() => this.showUpdate(category)}>Alter classification</LinkButton>
+                        {this.state.parentId === '0' ? <LinkButton onClick={() => {
+                            this.showSubCategories(category)
+                        }}>View sub-categories</LinkButton> : null}
                     </span>
                 )
             }
         ]
     }
-    getCategories = async () => {
+    showCategory = () => {
+        this.setState({
+            parentId: '0',
+            parentName: '',
+            subCategories: []
+        })
+    }
+    showSubCategories = (category) => {
+        this.setState({
+            parentId: category._id,
+            parentName: category.name
+        }, () => {
+            // console.log(this.state.parentId)
+            this.getCategories()
+        })
+
+    }
+    getCategories = async (parentId) => {
+        this.setState({loading: true})
+        // const {parentId} = this.state
+        parentId = parentId || this.state.parentId
         const result = await reqCategories('0')
+        this.setState({loading: false})
         if (result.status === 0) {
             const categories = result.data
-            this.setState({
-                categories
-            })
+            if (parentId === '0') {
+                this.setState({
+                    categories: categories
+                })
+            } else {
+                this.setState({
+                    subCategories: categories
+                })
+            }
         } else {
             message.error('Failed to get classification list')
         }
@@ -46,10 +114,17 @@ class Category extends Component {
     }
 
     render() {
-        const {categories} = this.state
-        const title = 'First-level classification list'
+        const {categories, loading, subCategories, parentId, parentName, showStatus} = this.state
+        const category = this.category || {}
+        const title = parentId === '0' ? 'First-level classification list' : (
+            <span>
+                <LinkButton onClick={this.showCategory}>First-level classification list</LinkButton>
+                <Icon type='arrow-right' style={{marginRight: 7}}></Icon>
+                <span>{parentName}</span>
+            </span>
+        )
         const extra = (
-            <Button type='primary'>
+            <Button type='primary' onClick={this.showAdd}>
                 <Icon type='plus'/>
                 Add
             </Button>
@@ -58,10 +133,31 @@ class Category extends Component {
         return (
             <Card title={title} extra={extra}>
                 <Table
-                    dataSource={categories}
+                    dataSource={parentId === '0' ? categories : subCategories}
                     columns={this.columns}
                     bordered={true}
-                    rowKey='_id'></Table>
+                    rowKey='_id'
+                    loading={loading}
+                    pagination={{defaultPageSize: 8, showQuickJumper: true}}></Table>
+                <Modal
+                    title='Add Classification'
+                    visible={showStatus === 1}
+                    onOk={this.addCategory}
+                    onCancel={this.handleCancel}
+                >
+                    <AddForm/>
+                </Modal>
+                <Modal
+                    title='Update Classification'
+                    visible={showStatus === 2}
+                    onOk={this.updateCategory}
+                    onCancel={this.handleCancel}
+                >
+                    <UpdateForm
+                        categoryName={category.name}
+                        setForm={(form => {this.form = form})}
+                    />
+                </Modal>
             </Card>
         );
     }
