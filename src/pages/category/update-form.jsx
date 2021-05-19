@@ -22,7 +22,10 @@ class UpdateForm extends Component {
                 <Item>
                     {
                         getFieldDecorator('categoryName', {
-                            initialValue: categoryName
+                            initialValue: categoryName,
+                            rules:[
+                                {required:true,message:'Classification is Required'}
+                            ]
                         })(
                             <Input placeholder='Please Input Classification Name'></Input>
                         )

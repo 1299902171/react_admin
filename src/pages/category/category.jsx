@@ -25,7 +25,23 @@ class Category extends Component {
         })
     }
     addCategory = () => {
-
+        this.form.validateFields(async (err,values) => {
+            if (!err) {
+                this.setState({
+                    showStatus: 0
+                })
+                const {parentId, categoryName} = values
+                this.form.resetFields()
+                const result = await reqAddCategories(categoryName, parentId)
+                if (result.status === 0) {
+                    if (parentId === this.state.parentId) {
+                        this.getCategories()
+                    } else if (parentId === '0') {
+                        this.getCategories('0')
+                    }
+                }
+            }
+        })
     }
     showUpdate = (category) => {
         this.category = category
@@ -33,18 +49,23 @@ class Category extends Component {
             showStatus: 2
         })
     }
-    updateCategory = async () => {
-        this.setState({
-            showStatus: 0
+    updateCategory =  () => {
+        this.form.validateFields(async (err,values) => {
+            if(!err){
+                this.setState({
+                    showStatus: 0
+                })
+                const categoryId = this.category._id
+                const {categoryName} = values
+                this.form.resetFields()
+                const result = await reqUpdateCategories({categoryId, categoryName})
+                if (result.status === 0) {
+                    this.getCategories()
+                }
+                this.getCategories()
+            }
         })
-        const categoryId = this.category._id
-        const categoryName = this.form.getFieldValue('categoryName')
-        this.form.resetFields()
-        const result = await reqUpdateCategories({categoryId, categoryName})
-        if (result.status === 0) {
-            this.getCategories()
-        }
-        this.getCategories()
+
     }
     initColumns = () => {
         this.columns = [
@@ -145,7 +166,13 @@ class Category extends Component {
                     onOk={this.addCategory}
                     onCancel={this.handleCancel}
                 >
-                    <AddForm/>
+                    <AddForm
+                        categories={categories}
+                        parentId={parentId}
+                        setForm={(form => {
+                            this.form = form
+                        })}
+                    />
                 </Modal>
                 <Modal
                     title='Update Classification'
@@ -155,7 +182,9 @@ class Category extends Component {
                 >
                     <UpdateForm
                         categoryName={category.name}
-                        setForm={(form => {this.form = form})}
+                        setForm={(form => {
+                            this.form = form
+                        })}
                     />
                 </Modal>
             </Card>
