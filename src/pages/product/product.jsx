@@ -3,6 +3,7 @@ import {Switch,Route,Redirect} from "react-router-dom";
 import ProductAddUpdate from "./add-update";
 import ProductHome from "./home";
 import ProductDetail from "./detail";
+import './product.less'
 
 
 class Product extends Component {

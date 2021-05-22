@@ -3,14 +3,31 @@ import jsonp from "jsonp";
 import {message} from "antd";
 
 const BASE = 'http://120.55.193.14:5000'
-// const BASE = 'http:zlx.cool:5000'
 
 export const reqCategories = (parentId) => ajax(BASE + '/manage/category/list', {parentId})
-export const reqAddCategories = (categoryName,parentId) => ajax(BASE + '/manage/category/add', {categoryName,parentId},'POST')
-export const reqUpdateCategories = ({parentId,categoryName}) => ajax(BASE + '/manage/category/update', {parentId,categoryName},'POST')
+export const reqAddCategories = (categoryName, parentId) => ajax(BASE + '/manage/category/add', {
+    categoryName,
+    parentId
+}, 'POST')
+export const reqUpdateCategories = ({parentId, categoryName}) => ajax(BASE + '/manage/category/update', {
+    parentId,
+    categoryName
+}, 'POST')
 
 export const reqLogin = (username, password) => ajax(BASE + '/login', {username, password}, 'POST')
 export const reqAddUser = (user) => ajax(BASE + '/manage/user/add', user, 'POST')
+export const reqProducts = (pageNum, pageSize) => ajax(BASE + '/manage/product/list', {pageNum, pageSize})
+export const reqSearchProducts = ({
+                                      pageNum,
+                                      pageSize,
+                                      searchName,
+                                      searchType
+                                  }) => ajax(BASE + '/manage/product/search', {
+    pageNum,
+    pageSize,
+    [searchType]: searchName,
+})
+export const reqCategory = (categoryId) => ajax(BASE + '/manage/category/info', {categoryId})
 
 export function reqWeather(city) {
     const url = `http://wthrcdn.etouch.cn/weather_mini?city=${city}`

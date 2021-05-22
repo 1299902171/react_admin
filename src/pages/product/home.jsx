@@ -1,12 +1,18 @@
 import React, {Component} from 'react';
 import {Card, Select, Input, Button, Icon, Table} from "antd";
 import LinkButton from "../../components/link-button";
+import {reqProducts, reqSearchProducts} from "../../api";
+import {PAGE_SIZE} from "../../utils/constants";
 
 const Option = Select.Option
 
 class ProductHome extends Component {
     state = {
+        total: 0,
         products: [],
+        loading: false,
+        searchName: '',
+        searchType: 'productName',
     }
     initColumns = () => {
         this.columns = [
@@ -24,11 +30,11 @@ class ProductHome extends Component {
                 render: (price) => '￥' + price
             },
             {
-                title:'Status',
-                width:100,
-                dataIndex:'status',
-                render: (status)=>{
-                    return(
+                title: 'Status',
+                width: 100,
+                dataIndex: 'status',
+                render: (status) => {
+                    return (
                         <span>
                             <Button type='primary'>Take Off</Button>
                             <span>On Sale</span>
@@ -37,12 +43,12 @@ class ProductHome extends Component {
                 }
             },
             {
-                title:'Operations',
-                width:100,
-                render: (product)=>{
-                    return(
+                title: 'Operations',
+                width: 100,
+                render: (product) => {
+                    return (
                         <span>
-                            <LinkButton>Details</LinkButton>
+                            <LinkButton onClick={()=>this.props.history.push('/product/detail',{product})}>Details</LinkButton>
                             <LinkButton>Modify</LinkButton>
                         </span>
                     )
@@ -50,21 +56,53 @@ class ProductHome extends Component {
             }
         ]
     }
+    getProducts = async (pageNum) => {
+        this.pageNum = pageNum
+        this.setState({loading: true})
+        const {searchName, searchType} = this.state
+        let result
+        if (searchName) {
+            result = await reqSearchProducts({pageNum, PageSize: PAGE_SIZE, searchName, searchType})
+        } else {
+            result = await reqProducts(pageNum, PAGE_SIZE)
+        }
+        this.setState({loading: false})
+        if (result.status === 0) {
+            const {total, list} = result.data
+            this.setState({
+                total,
+                products: list
+            })
+        }
+    }
 
     componentWillMount() {
         this.initColumns()
     }
 
+    componentDidMount() {
+        this.getProducts(1)
+    }
+
     render() {
-        const {products} = this.state
+        const {products, total, loading, searchName, searchType} = this.state
         const title = (
             <span>
-                <Select value='1' style={{width: 200}}>
-                    <Option value='1'>Search by Name</Option>
-                    <Option value='2'>Search by Description</Option>
+                <Select
+                    value={searchType}
+                    style={{width: 200}}
+                    onChange={value => this.setState({searchType: value})}
+                >
+                    <Option value='productName'>Search by Name</Option>
+                    <Option value='productDesc'>Search by Description</Option>
                 </Select>
-                <Input placeholder='Key Word' style={{width: 150, margin: '0 15px'}}/>
-                <Button type='primary'>Search</Button>
+                <Input
+                    placeholder='Key Word'
+                    style={{width: 150, margin: '0 15px'}}
+                    value={searchName}
+                    onChange={event => this.setState({searchName: event.target.value})}
+                />
+                <Button type='primary' onClick={() => this.getProducts(1)}>Search</Button>
             </span>
         )
         const extra = (
@@ -75,7 +113,19 @@ class ProductHome extends Component {
         )
         return (
             <Card title={title} extra={extra}>
-                <Table bordered rowKey='_id' dataSource={products} columns={this.columns}/>
+                <Table bordered
+                       rowKey='_id'
+                       loading={loading}
+                       dataSource={products}
+                       columns={this.columns}
+                       pagination={{
+                           current:this.pageNum,
+                           total,
+                           defaultPageSize: PAGE_SIZE,
+                           showQuickJumper: true,
+                           onChange: this.getProducts
+                       }}
+                />
             </Card>
         );
     }
