@@ -32,11 +32,11 @@ class ProductHome extends Component {
             {
                 title: 'Status',
                 width: 100,
-                dataIndex: 'status',
-                render: (status) => {
+                render: (product) => {
+                    // const {status, _id} = product
                     return (
                         <span>
-                            <Button type='primary'>Take Off</Button>
+                            <Button type='primary'>Take OFF</Button>
                             <span>On Sale</span>
                         </span>
                     )
@@ -48,7 +48,8 @@ class ProductHome extends Component {
                 render: (product) => {
                     return (
                         <span>
-                            <LinkButton onClick={()=>this.props.history.push('/product/detail',{product})}>Details</LinkButton>
+                            <LinkButton
+                                onClick={() => this.props.history.push('/product/detail', {product})}>Details</LinkButton>
                             <LinkButton>Modify</LinkButton>
                         </span>
                     )
@@ -56,6 +57,13 @@ class ProductHome extends Component {
             }
         ]
     }
+    // updateStatus = async (productId, status) => {
+    //     const result = await reqUpdateStatus(productId, status)
+    //     if (result.status === 0) {
+    //         message.success('Update Successfully!')
+    //         this.getProducts(this.pageNum)
+    //     }
+    // }
     getProducts = async (pageNum) => {
         this.pageNum = pageNum
         this.setState({loading: true})
@@ -106,7 +114,7 @@ class ProductHome extends Component {
             </span>
         )
         const extra = (
-            <Button type='primary'>
+            <Button type='primary' onClick={() => this.props.history.push('/product/addUpdate')}>
                 <Icon type='plus'/>
                 Add Product
             </Button>
@@ -119,7 +127,7 @@ class ProductHome extends Component {
                        dataSource={products}
                        columns={this.columns}
                        pagination={{
-                           current:this.pageNum,
+                           current: this.pageNum,
                            total,
                            defaultPageSize: PAGE_SIZE,
                            showQuickJumper: true,

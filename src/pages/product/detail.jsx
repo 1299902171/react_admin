@@ -63,11 +63,11 @@ class ProductDetail extends Component {
                     <Item className='left'>
                         <span>Product Picture:</span>
                         <span>
-                          {
-                              imgs.map(img => (
-                                  <img key={img} src={BASE_IMG_URL + img} className="product-img" alt="img"/>
-                              ))
-                          }
+                          {/*{*/}
+                          {/*    imgs.map(img => (*/}
+                          {/*        <img key={img} src={BASE_IMG_URL + img} className="product-img" alt="img"/>*/}
+                          {/*    ))*/}
+                          {/*}*/}
                         </span>
                     </Item>
                     <Item className='left'>
