@@ -28,7 +28,11 @@ export const reqSearchProducts = ({
     [searchType]: searchName,
 })
 export const reqCategory = (categoryId) => ajax(BASE + '/manage/category/info', {categoryId})
-export const reqUpdateStatus = (productId, status) => ajax(BASE + '/manage/product/updateStatus', {productId, status}, 'POST')
+export const reqUpdateStatus = (productId, status) => ajax(BASE + '/manage/product/updateStatus', {
+    productId,
+    status
+}, 'POST')
+export const reqDeleteImg = (name) => ajax(BASE + '/manage/img/delete', {name}, 'POST')
 
 export function reqWeather(city) {
     const url = `http://wthrcdn.etouch.cn/weather_mini?city=${city}`

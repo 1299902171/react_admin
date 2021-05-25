@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Card, Icon, List,} from "antd";
 import LinkButton from "../../components/link-button";
-import {BASE_IMG_URL} from "../../utils/constants";
+// import {BASE_IMG_URL} from "../../utils/constants";
 import {reqCategory} from "../../api";
 
 const Item = List.Item
@@ -30,7 +30,7 @@ class ProductDetail extends Component {
     }
 
     render() {
-        const {name, desc, price, detail, imgs} = this.props.location.state.product
+        const {name, desc, price, detail} = this.props.location.state.product
         const {cName1, cName2} = this.state
         const title = (
             <span>
