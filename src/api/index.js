@@ -33,6 +33,7 @@ export const reqUpdateStatus = (productId, status) => ajax(BASE + '/manage/produ
     status
 }, 'POST')
 export const reqDeleteImg = (name) => ajax(BASE + '/manage/img/delete', {name}, 'POST')
+export const reqAddOrUpdateProduct = (product) => ajax(BASE + '/manage/product/' + (product._id ? 'update' : 'add'), product, 'POST')
 
 export function reqWeather(city) {
     const url = `http://wthrcdn.etouch.cn/weather_mini?city=${city}`

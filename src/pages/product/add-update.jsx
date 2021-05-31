@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Card, Form, Input, Cascader, Button, Icon} from "antd";
+import {Card, Form, Input, Cascader, Button, Icon, message} from "antd";
 import LinkButton from "../../components/link-button";
-import {reqCategories} from "../../api";
+import {reqCategories, reqAddOrUpdateProduct} from "../../api";
 import PicturesWall from "./pictures-wall";
+import RichTextEditor from "./rich-text-editor";
 
 const {Item} = Form
 const {TextArea} = Input
@@ -11,9 +12,11 @@ class ProductAddUpdate extends Component {
     state = {
         options: [],
     }
+
     constructor(props) {
         super(props);
-        this.pw=React.createRef()
+        this.pw = React.createRef()
+        this.editor = React.createRef()
     }
 
     initOptions = async (categories) => {
@@ -52,9 +55,30 @@ class ProductAddUpdate extends Component {
     }
 
     submit = () => {
-        this.props.form.validateFields((error, values) => {
+        this.props.form.validateFields(async (error, values) => {
             if (!error) {
-                this.pw.current.getImgs()
+                const {name, desc, price, categoryIds} = values
+                let pCategoryId, categoryId
+                if (categoryIds.length === 1) {
+                    pCategoryId = '0'
+                    categoryId = categoryIds[0]
+                } else {
+                    pCategoryId = categoryIds[0]
+                    categoryId = categoryIds[1]
+                }
+                const imgs = this.pw.current.getImgs()
+                const detail = this.editor.current.getDetail()
+                const product = {name, desc, price, imgs, detail}
+                if (this.isUpdate) {
+                    product._id = this.product._id
+                }
+                const result = await reqAddOrUpdateProduct(product)
+                if (result.status === 0) {
+                    message.success(`${this.isUpdate ? 'Update ' : 'Add '}Successfully!`)
+                    this.props.history.goBack()
+                } else {
+                    message.error(`${this.isUpdate ? 'Update ' : 'Add '}Failed!`)
+                }
             } else {
 
             }
@@ -101,7 +125,7 @@ class ProductAddUpdate extends Component {
 
     render() {
         const {isUpdate, product} = this
-        const {pCategoryId, categoryId,imgs} = product
+        const {pCategoryId, categoryId, imgs, detail} = product
         const categoryIds = []
         if (isUpdate) {
             if (pCategoryId === '0') {
@@ -177,8 +201,8 @@ class ProductAddUpdate extends Component {
                     <Item label='Product Picture'>
                         <PicturesWall ref={this.pw} imgs={imgs}/>
                     </Item>
-                    <Item label='Product Detail'>
-
+                    <Item label='Product Detail' labelCol={{span: 2}} wrapperCol={{span: 20}}>
+                        <RichTextEditor ref={this.editor} detail={detail}/>
                     </Item>
                     <Item>
                         <Button type='primary' onClick={this.submit}>Submit</Button>
