@@ -34,6 +34,9 @@ export const reqUpdateStatus = (productId, status) => ajax(BASE + '/manage/produ
 }, 'POST')
 export const reqDeleteImg = (name) => ajax(BASE + '/manage/img/delete', {name}, 'POST')
 export const reqAddOrUpdateProduct = (product) => ajax(BASE + '/manage/product/' + (product._id ? 'update' : 'add'), product, 'POST')
+export const reqRoles = () => ajax(BASE + '/manage/role/list')
+export const reqAddRole = (roleName) => ajax(BASE + '/manage/role/add', {roleName}, 'POST')
+export const reqUpdateRole = (role) => ajax(BASE + '/manage/role/update', role, 'POST')
 
 export function reqWeather(city) {
     const url = `http://wthrcdn.etouch.cn/weather_mini?city=${city}`
