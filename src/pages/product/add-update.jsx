@@ -57,15 +57,15 @@ class ProductAddUpdate extends Component {
     submit = () => {
         this.props.form.validateFields(async (error, values) => {
             if (!error) {
-                const {name, desc, price, categoryIds} = values
-                let pCategoryId, categoryId
-                if (categoryIds.length === 1) {
-                    pCategoryId = '0'
-                    categoryId = categoryIds[0]
-                } else {
-                    pCategoryId = categoryIds[0]
-                    categoryId = categoryIds[1]
-                }
+                const {name, desc, price} = values
+                // let pCategoryId, categoryId
+                // if (categoryIds.length === 1) {
+                //     pCategoryId = '0'
+                //     categoryId = categoryIds[0]
+                // } else {
+                //     pCategoryId = categoryIds[0]
+                //     categoryId = categoryIds[1]
+                // }
                 const imgs = this.pw.current.getImgs()
                 const detail = this.editor.current.getDetail()
                 const product = {name, desc, price, imgs, detail}

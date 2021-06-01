@@ -5,7 +5,7 @@ class Home extends Component {
     render() {
         return (
             <div className='home'>
-                111
+                <p style={{fontSize:75}}>Welcome!</p>
             </div>
         );
     }
