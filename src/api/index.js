@@ -39,6 +39,7 @@ export const reqAddRole = (roleName) => ajax(BASE + '/manage/role/add', {roleNam
 export const reqUpdateRole = (role) => ajax(BASE + '/manage/role/update', role, 'POST')
 export const reqUsers = () => ajax(BASE + '/manage/user/list')
 export const reqDeleteUser = (userId) => ajax(BASE + '/manage/user/delete', {userId}, 'POST')
+export const reqAddOrUpdateUser = (user) => ajax(BASE + '/manage/user/'+(user._id ? 'update' : 'add'), user, 'POST')
 
 export function reqWeather(city) {
     const url = `http://wthrcdn.etouch.cn/weather_mini?city=${city}`
